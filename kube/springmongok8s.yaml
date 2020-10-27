@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springmongok8sapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springmongok8sapp
+  template:
+    metadata:
+      labels:
+        app: springmongok8sapp
+    spec:
+      containers:
+        - name: springmongok8sapp
+          image: pramod08728/springmongok8sapp
+          ports:
+            - containerPort: 8100
+          env:
+            - name: MONGO_URL
+              value: mongodb://mongo:27017/sbmongok8s
+          imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springmongok8sapp
+spec:
+  selector:
+    app: springmongok8sapp
+  ports:
+    - port: 8100
+      targetPort: 8100
+  type: LoadBalancer
+
